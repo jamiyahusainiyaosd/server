@@ -1,12 +1,7 @@
 from rest_framework import serializers
-from .models import AllNotice, RecentNotice
+from .models import Notice
 
-class AllNoticeSerializer(serializers.ModelSerializer):
+class NoticeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = AllNotice
-        fields = ['id', 'allNoticeTitle', 'allNoticeCrated', 'allNoticeUpdate']
-
-class RecentNoticeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RecentNotice
-        fields = ['id', 'recentNoticeTitle', 'recentNoticeDescription', 'recentNoticeCrated', 'recentNoticeUpdate']
+        model = Notice
+        fields = ['id', 'notice_type', 'title', 'description', 'created_at', 'updated_at']

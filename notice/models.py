@@ -1,25 +1,19 @@
 from django.db import models
 
-# Create your models here.
-class AllNotice(models.Model):
-    allNoticeTitle = models.CharField(max_length=500, verbose_name='নোটিশ এর নাম')
-    allNoticeCrated = models.DateTimeField(auto_now_add=True)
-    allNoticeUpdate = models.DateTimeField(auto_now=True)
+class Notice(models.Model):
+    NOTICE_TYPES = (
+        ('All', 'All Notice'),
+        ('Recent', 'Recent Notice'),
+    )
+
+    notice_type = models.CharField(max_length=1000, choices=NOTICE_TYPES, default='All', verbose_name='নোটিশের ধরন')
+    title = models.CharField(max_length=1000, verbose_name='নোটিশ এর নাম')
+    description = models.TextField(blank=True, null=True, verbose_name='নোটিশ এর বিস্তারিত')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.allNoticeTitle}'
-    
-    class Meta:
-        verbose_name_plural = 'সব নোটিশ'
+        return f'{self.title} - {self.notice_type}'  
 
-class RecentNotice(models.Model):
-    recentNoticeTitle = models.CharField(max_length=500, verbose_name='নোটিশ এর নাম')
-    recentNoticeDescription = models.TextField(verbose_name='নোটিশ এর বিস্তারিত')
-    recentNoticeCrated = models.DateTimeField(auto_now_add=True)
-    recentNoticeUpdate = models.DateTimeField(auto_now=True)
-    
-    def __str__(self):
-        return f'{self.recentNoticeTitle} - {self.recentNoticeDescription}'
-    
     class Meta:
-        verbose_name_plural = 'রিসেন্ট অদ্য কয়েকটি নোটিশ'
+        verbose_name_plural = 'সব নোটিশ' 

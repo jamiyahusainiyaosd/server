@@ -31,6 +31,13 @@ ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app"]
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+CORS_ALLOWED_ORIGINS = [
+ "http://localhost:5173",
+ "http://localhost:5174",
+ "http://localhost:5175",
+ "http://localhost:5176",
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -52,6 +59,7 @@ INSTALLED_APPS = [
     'contact',
     'notice',
     'admission',
+    'image',
 ]
 
 MIDDLEWARE = [
