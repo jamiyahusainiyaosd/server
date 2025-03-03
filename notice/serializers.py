@@ -1,7 +1,12 @@
 from rest_framework import serializers
 from .models import Notice
 
-class NoticeSerializer(serializers.ModelSerializer):
+class NoticeListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notice
-        fields = ['id', 'notice_type', 'title', 'description', 'created_at', 'updated_at']
+        fields =  ['id', 'title', 'created_at']
+
+class NoticeDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notice
+        fields = ['id', 'title', 'description', 'created_at', 'updated_at']

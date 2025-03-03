@@ -1,33 +1,24 @@
 from rest_framework import generics
 from .models import Notice
-from .serializers import NoticeSerializer
+from .serializers import NoticeDetailsSerializer, NoticeListSerializer
 
 class NoticeListApiView(generics.ListAPIView):
-    serializer_class = NoticeSerializer
+    serializer_class = NoticeListSerializer
 
     def get_queryset(self):
-        notice_type = self.kwargs.get('notice_type')
-        print(f"Request Notice Type: {notice_type}")  
-
-        if notice_type == 'recent':
-            queryset = Notice.objects.filter(notice_type='Recent').order_by('-created_at')[:3]
-            print(f"Filtered Recent Notices: {queryset}")  
-            return queryset
         return Notice.objects.all()
 
 
 class NoticeDetailsApiView(generics.RetrieveAPIView):
-    serializer_class = NoticeSerializer
+    serializer_class = NoticeDetailsSerializer
     lookup_field = 'pk'
 
     def get_queryset(self):
-        notice_type = self.kwargs.get('notice_type')
-        print(f"Details API Notice Type: {notice_type}")  
+        return Notice.objects.all()
 
-        if notice_type == 'recent':
-            queryset = Notice.objects.filter(notice_type='Recent')
-        else:
-            queryset = Notice.objects.all()
 
-        print(f"Filtered Details Notice: {queryset}")  
-        return queryset
+class LatestNoticesApiView(generics.ListAPIView):
+    serializer_class = NoticeListSerializer
+
+    def get_queryset(self):
+        return Notice.objects.order_by('-created_at')[:3]

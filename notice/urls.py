@@ -1,7 +1,10 @@
 from django.urls import path
-from .views import NoticeListApiView, NoticeDetailsApiView
+from .views import (
+    LatestNoticesApiView, NoticeDetailsApiView,
+    NoticeListApiView)
 
 urlpatterns = [
-    path('<str:notice_type>/', NoticeListApiView.as_view(), name='notices-list'),
-    path('<str:notice_type>/<int:pk>/', NoticeDetailsApiView.as_view(), name='notices-detail'),
+    path('', NoticeListApiView.as_view(), name='notices-list'),
+    path('<int:pk>/', NoticeDetailsApiView.as_view(), name='notices-details'),
+    path('latest/', LatestNoticesApiView.as_view(), name='notices-list-recent'),
 ]
