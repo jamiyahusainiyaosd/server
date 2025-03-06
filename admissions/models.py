@@ -1,6 +1,8 @@
 from django.db import models
+import uuid
 
 class Admission(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     ClassName = models.CharField(max_length=255, verbose_name="জামাতের নাম")
     class_level = models.CharField(max_length=100, verbose_name="শ্রেণীর স্তর")
     form_fee = models.IntegerField(default=100, verbose_name="ফরম ফি")

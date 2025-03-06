@@ -5,3 +5,4 @@ class ImageAdmin(admin.ModelAdmin):
     list_display = ['id', 'img']
 
 admin.site.register(Images, ImageAdmin)
+

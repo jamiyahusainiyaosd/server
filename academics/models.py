@@ -1,7 +1,9 @@
 from django.db import models
+import uuid
 
 # Create your models here.
 class Academic(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     class_name = models.CharField(max_length=100, verbose_name='ক্লাসের নাম')
     class_title = models.CharField(max_length=100, verbose_name='ক্লাসের একটি টাইটেল')
     class_description = models.TextField(verbose_name='ক্লাসের সম্পর্কে বিস্তারিত')

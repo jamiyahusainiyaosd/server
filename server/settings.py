@@ -55,11 +55,11 @@ INSTALLED_APPS = [
     'django_filters',
     #my app
     'teacher',
-    'academic',
+    'academics',
     'contact',
-    'notice',
-    'admission',
-    'image',
+    'notices',
+    'admissions',
+    'images',
 ]
 
 MIDDLEWARE = [
