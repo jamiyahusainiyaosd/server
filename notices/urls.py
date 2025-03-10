@@ -5,6 +5,6 @@ from .views import (
 
 urlpatterns = [
     path('', NoticeListApiView.as_view(), name='notices-list'),
-    path('<uuid:pk>/', NoticeDetailsApiView.as_view(), name='notices-details'),
-    path('latest/', LatestNoticesApiView.as_view(), name='notices-list-recent'),
+    path('/<uuid:pk>', NoticeDetailsApiView.as_view(), name='notices-details'),
+    path('/latest', LatestNoticesApiView.as_view(), name='notices-list-recent'),
 ]
