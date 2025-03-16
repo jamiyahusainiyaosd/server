@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'images',
     'gallary',
     'book',
+    'results',
 ]
 
 MIDDLEWARE = [

@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 import logging
 from .serializers import ContactFormSerializer
+
 logger = logging.getLogger(__name__)
 
 class ContactFormView(APIView):
@@ -31,9 +32,8 @@ class ContactFormView(APIView):
                     subject,
                     email_message,
                     settings.EMAIL_HOST_USER, 
-                    ['your_email@example.com'], 
-                    fail_silently=False,
-                    headers={'Reply-To': email}  
+                    ['jamiyahusainiya1@gmail.com'], 
+                    fail_silently=False  
                 )
                 logger.info(f"Email sent successfully from {email} (Phone: {phone})")
 
