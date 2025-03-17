@@ -9,3 +9,7 @@ class BookIntroductionListView(generics.ListAPIView):
     serializer_class = BookIntroductionSerializers
     filter_backends = [SearchFilter]
     search_fields = ['bookTitle', 'authorName']
+
+class BookIntroductionDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = BookIntroduction.objects.all()
+    serializer_class = BookIntroductionSerializers
