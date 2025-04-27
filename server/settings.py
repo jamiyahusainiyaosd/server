@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'book',
     'results',
     'financialReport',
+    'visitWebsite',
 ]
 
 MIDDLEWARE = [
