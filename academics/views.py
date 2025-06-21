@@ -36,7 +36,7 @@ class AcademicListApiView(generics.ListAPIView):
 class AcademicDetailsListApiView(generics.RetrieveAPIView):
     queryset = Academic.objects.all()
     serializer_class = AcademicSerializer
-    lookup_field = 'pk'  # UUID ব্যবহার করা হবে
+    lookup_field = 'pk' 
 
     def retrieve(self, request, *args, **kwargs):
         try:
