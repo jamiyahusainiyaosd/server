@@ -62,6 +62,8 @@ INSTALLED_APPS = [
     'gallary',
     'results',
     'financialReport',
+    'expatriateGrant',
+    'formerStudent',
 ]
 
 MIDDLEWARE = [
