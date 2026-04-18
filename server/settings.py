@@ -39,7 +39,25 @@ CORS_ALLOWED_ORIGINS = [
 
 # Application definition
 
+UNFOLD = {
+    "SITE_TITLE": "Jamiyah Husainiya Admin",
+    "SITE_HEADER": "Jamiyah Husainiya Dashboard",
+    "SITE_SUBHEADER": "Madrasa Management System",
+    "SITE_SYMBOL": "school",
+    "SITE_URL": "/",
+    "SHOW_HISTORY": True,
+    "SHOW_VIEW_ON_SITE": True,
+    "SIDEBAR": {
+        "show_search": True,
+        "show_all_applications": True,
+    },
+    "LOGIN": {
+        "redirect_after": "/admin/",
+    },
+}
+
 INSTALLED_APPS = [
+    'unfold',
     'whitenoise.runserver_nostatic', 
     #pre define
     'django.contrib.admin',
