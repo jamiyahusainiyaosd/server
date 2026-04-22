@@ -5,7 +5,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 
 class AdmissionPagination(PageNumberPagination):
-    page_size = 5 # প্রতিটি পেজের মধ্যে ৫ টি করে আইটেম দেখাবে।
+    page_size = 5 
     page_size_query_param = 'page_size'
     max_page_size = 100
 

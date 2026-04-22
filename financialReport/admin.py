@@ -51,7 +51,7 @@ class FinanicialReportAdmin(ModelAdmin):
         if obj.finanicialReportImage:
             return format_html(
                 '<img src="{}" width="60" height="60" style="border-radius:6px; object-fit:cover;" />',
-                obj.finanicialReportImage.url
+                obj.finanicialReportImage
             )
         return "-"
 
