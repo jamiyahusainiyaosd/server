@@ -1,12 +1,19 @@
 from rest_framework import generics, filters
+from rest_framework.pagination import PageNumberPagination
 from .models import StudentResults, StudentResultImage
 from .serializers import StudentResueltsListSerializer, StudentResueltsDetailSerializer, StudentResultImageSerializer 
 from rest_framework.response import Response
 from rest_framework import status
 
+class CustomPagination(PageNumberPagination):
+    page_size = 9
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
 class StudentResueltsListCreateView(generics.ListCreateAPIView):
     queryset = StudentResults.objects.all().order_by('-resultCreatedAt') 
     serializer_class = StudentResueltsListSerializer
+    pagination_class = CustomPagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['studentClassName']
     ordering_fields = ['resultCreatedAt', 'resultUpdatedAt']  
@@ -25,16 +32,16 @@ class UploadResultImageView(generics.CreateAPIView):
         image_urls = request.data.getlist('resultsSheetImg')  
 
         if not student_result_id or not image_urls:
-            return Response({"error": "Student result ID and image URLs are required"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Student result ID and image URLs are required'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             student_result = StudentResults.objects.get(id=student_result_id)
         except StudentResults.DoesNotExist:
-            return Response({"error": "Invalid student result ID"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Invalid student result ID'}, status=status.HTTP_404_NOT_FOUND)
 
         uploaded_images = []
         for img_url in image_urls:
             new_image = StudentResultImage.objects.create(student_result=student_result, resultsSheetImg=img_url)
             uploaded_images.append(StudentResultImageSerializer(new_image).data)
 
-        return Response({"message": "Images uploaded successfully", "images": uploaded_images}, status=status.HTTP_201_CREATED)
+        return Response({'message': 'Images uploaded successfully', 'images': uploaded_images}, status=status.HTTP_201_CREATED)

@@ -167,3 +167,10 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env("EMAIL")
 EMAIL_HOST_PASSWORD = env("EMAIL_PASSWORD")
+# Supabase Storage Configuration
+SUPABASE_URL = env("SUPABASE_URL", default="https://ynmfshvkhnqclpcaxrae.supabase.co")
+SUPABASE_S3_ENDPOINT = env("SUPABASE_S3_ENDPOINT", default="https://ynmfshvkhnqclpcaxrae.storage.supabase.co/storage/v1/s3")
+SUPABASE_S3_ACCESS_KEY = env("SUPABASE_S3_ACCESS_KEY", default="")
+SUPABASE_S3_SECRET_KEY = env("SUPABASE_S3_SECRET_KEY", default="")
+SUPABASE_STORAGE_BUCKET = env("SUPABASE_STORAGE_BUCKET", default="Photo Gallary")
+SUPABASE_REGION_NAME = env("SUPABASE_REGION_NAME", default="ap-southeast-1")

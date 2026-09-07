@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
@@ -7,9 +8,15 @@ from rest_framework.exceptions import NotFound
 from .models import Academic
 from .serializers import AcademicSerializer
 
+class CustomPagination(PageNumberPagination):
+    page_size = 9
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
 class AcademicListApiView(generics.ListAPIView):    
     queryset = Academic.objects.all().order_by('id')
     serializer_class = AcademicSerializer
+    pagination_class = CustomPagination
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_fields = ['class_name']
     ordering_fields = ['class_title']
@@ -21,16 +28,22 @@ class AcademicListApiView(generics.ListAPIView):
 
         if page is not None:
             serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response({
-                "success": True,
-                "message": "Classes fetched successfully",
-                "data": serializer.data
+            return Response({
+                'success': True,
+                'message': 'Classes fetched successfully',
+                'count': self.paginator.page.paginator.count,
+                'total_pages': self.paginator.page.paginator.num_pages,
+                'data': serializer.data,
+                'results': serializer.data
             })
         serializer = self.get_serializer(queryset, many=True)
         return Response({
-            "success": True,
-            "message": "Classes fetched successfully",
-            "data": serializer.data
+            'success': True,
+            'message': 'Classes fetched successfully',
+            'count': queryset.count(),
+            'total_pages': 1,
+            'data': serializer.data,
+            'results': serializer.data
         })
 
 class AcademicDetailsListApiView(generics.RetrieveAPIView):
@@ -44,4 +57,4 @@ class AcademicDetailsListApiView(generics.RetrieveAPIView):
             serializer = self.get_serializer(instance)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except NotFound:
-            return Response({"error": "Class Not Found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Class Not Found'}, status=status.HTTP_404_NOT_FOUND)

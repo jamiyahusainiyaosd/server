@@ -21,7 +21,7 @@ def api_error(message="Error", errors=None):
     return payload
 
 class SimplePaginator:
-    default_page_size = 12
+    default_page_size = 9
     max_page_size = 100
 
     def paginate(self, queryset, request):

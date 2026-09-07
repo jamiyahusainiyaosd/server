@@ -10,6 +10,13 @@ class TeacherModel(models.Model):
         verbose_name='শিক্ষকের ফোন নাম্বার',
         validators=[RegexValidator(regex=r'^\+?\d{9,15}$', message='Enter A Valid Phone Number.')]
     )
+    image = models.URLField(
+        default='',
+        blank=True,
+        null=True,
+        max_length=2000,
+        verbose_name='শিক্ষকের ছবি'
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
