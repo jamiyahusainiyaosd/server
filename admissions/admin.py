@@ -28,7 +28,6 @@ class AdmissionAdmin(ModelAdmin):
     )
 
     ordering = ("-admission_created",)
-
     list_per_page = 20
 
     readonly_fields = (
@@ -44,7 +43,6 @@ class AdmissionAdmin(ModelAdmin):
                 "seat_availability",
             )
         }),
-
         ("Fees Structure", {
             "fields": (
                 "form_fee",
@@ -56,20 +54,17 @@ class AdmissionAdmin(ModelAdmin):
                 "monthly_fee",
             )
         }),
-
         ("Admission Timeline", {
             "fields": (
                 "admission_start_date",
                 "admission_end_date",
             )
         }),
-
         ("Requirements", {
             "fields": (
                 "required_documents",
             )
         }),
-
         ("Timestamps", {
             "fields": (
                 "admission_created",
@@ -77,6 +72,7 @@ class AdmissionAdmin(ModelAdmin):
             )
         }),
     )
+
 
 @admin.register(AdmissionRule)
 class AdmissionRuleAdmin(ModelAdmin):
