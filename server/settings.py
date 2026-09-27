@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     "financialReport",
     "expatriateGrant",
     "formerStudent",
+    "theme_config",
 ]
 
 MIDDLEWARE = [
