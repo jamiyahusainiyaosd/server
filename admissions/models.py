@@ -26,3 +26,22 @@ class Admission(models.Model):
     
     class Meta:
         verbose_name_plural = 'ভর্তি'
+
+
+class AdmissionRule(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=255, verbose_name='শর্ত বা নিয়মের শিরোনাম')
+    description = models.TextField(verbose_name='শর্ত বা নিয়মের বিস্তারিত বিবরণ')
+    icon = models.CharField(max_length=50, default='check_circle', verbose_name='আইকন নাম (Material Symbol)')
+    order = models.PositiveIntegerField(default=1, verbose_name='ক্রমিক / সিরিয়াল (Order)')
+    is_active = models.BooleanField(default=True, verbose_name='সক্রিয়')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.order}. {self.title}'
+
+    class Meta:
+        ordering = ['order', 'created_at']
+        verbose_name = 'ভর্তির নিয়মাবলী ও শর্ত'
+        verbose_name_plural = 'ভর্তির আবশ্যকীয় নিয়মাবলী (Admission Rules)'

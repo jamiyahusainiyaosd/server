@@ -9,7 +9,11 @@ class StudentResultImageSerializer(serializers.ModelSerializer):
 class StudentResueltsListSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentResults
-        fields = ['id', 'studentClassName', 'resultCreatedAt', 'resultUpdatedAt']  
+        fields = [
+            'id', 'studentClassName', 'exam_session', 'academic_year', 
+            'board_name', 'total_students', 'passed_students', 'pass_rate', 
+            'grade_detail', 'certificate_status', 'helpline', 'resultCreatedAt', 'resultUpdatedAt'
+        ]  
 
 class StudentResueltsDetailSerializer(serializers.ModelSerializer):
     images = StudentResultImageSerializer(many=True, read_only=True)
@@ -17,8 +21,13 @@ class StudentResueltsDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StudentResults
-        fields = ['id', 'studentClassName', 'studentClassDescription', 
-                 'resultCreatedAt', 'resultUpdatedAt', 'images', 'latest_update']
+        fields = [
+            'id', 'studentClassName', 'studentClassDescription', 
+            'exam_session', 'academic_year', 'board_name', 
+            'total_students', 'passed_students', 'pass_rate', 
+            'grade_detail', 'certificate_status', 'helpline',
+            'resultCreatedAt', 'resultUpdatedAt', 'images', 'latest_update'
+        ]
 
     def get_latest_update(self, obj):
         if obj.images.exists():

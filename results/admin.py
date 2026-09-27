@@ -83,18 +83,23 @@ class StudentResultImageInline(admin.TabularInline):
 @admin.register(StudentResults)
 class StudentResultsAdmin(ModelAdmin):
     list_display = (
-        "id",
         "studentClassName",
-        "studentClassDescription",
+        "academic_year",
+        "total_students",
+        "passed_students",
+        "pass_rate",
         "resultCreatedAt",
     )
 
     search_fields = (
         "studentClassName",
         "studentClassDescription",
+        "exam_session",
+        "board_name",
     )
 
     list_filter = (
+        "academic_year",
         "resultCreatedAt",
     )
 
@@ -107,10 +112,22 @@ class StudentResultsAdmin(ModelAdmin):
     )
 
     fieldsets = (
-        ("Result Information", {
+        ("ফলাফলের মূল তথ্য", {
             "fields": (
                 "studentClassName",
                 "studentClassDescription",
+                "exam_session",
+                "academic_year",
+                "board_name",
+            )
+        }),
+        ("পরীক্ষার্থী ও পাসের পরিসংখ্যান", {
+            "fields": (
+                "total_students",
+                "passed_students",
+                "pass_rate",
+                "grade_detail",
+                "certificate_status",
             )
         }),
         ("Timestamps", {

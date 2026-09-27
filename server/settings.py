@@ -75,7 +75,6 @@ INSTALLED_APPS = [
     "contact",
     "notices",
     "admissions",
-    "images",
     "gallary",
     "results",
     "financialReport",

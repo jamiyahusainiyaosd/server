@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
-from .models import Notice
-from .serializers import NoticeDetailsSerializer, NoticeListSerializer
+from .models import Notice, Announcement
+from .serializers import NoticeDetailsSerializer, NoticeListSerializer, AnnouncementSerializer
 
 class CustomPagination(PageNumberPagination):
     page_size = 9
@@ -27,3 +27,10 @@ class LatestNoticesApiView(generics.ListAPIView):
 
     def get_queryset(self):
         return Notice.objects.order_by('-created_at')[:3]
+
+class AnnouncementListApiView(generics.ListAPIView):
+    serializer_class = AnnouncementSerializer
+    pagination_class = None
+
+    def get_queryset(self):
+        return Announcement.objects.filter(is_active=True).order_by('order', '-created_at')

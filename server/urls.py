@@ -10,7 +10,6 @@ urlpatterns = [
     path('api/v1/contact/', include('contact.urls')),
     path('api/v1/notices/', include('notices.urls')),
     path('api/v1/admissions/', include('admissions.urls')),
-    path('api/v1/images/', include('images.urls')),
     path('api/v1/gallary/', include('gallary.urls')),
     path('api/v1/results/', include('results.urls')),
     path('api/v1/financialReport/', include('financialReport.urls')),

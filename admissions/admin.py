@@ -1,6 +1,6 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
-from .models import Admission
+from .models import Admission, AdmissionRule
 
 
 @admin.register(Admission)
@@ -77,3 +77,12 @@ class AdmissionAdmin(ModelAdmin):
             )
         }),
     )
+
+@admin.register(AdmissionRule)
+class AdmissionRuleAdmin(ModelAdmin):
+    list_display = ('title', 'order', 'icon', 'is_active', 'created_at')
+    list_editable = ('order', 'is_active')
+    list_display_links = ('title',)
+    search_fields = ('title', 'description')
+    list_filter = ('is_active',)
+    ordering = ('order',)

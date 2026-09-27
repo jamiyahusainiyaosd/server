@@ -1,6 +1,6 @@
 from rest_framework import generics, filters
-from .models import Admission
-from .serializers import AdmissionSerializer
+from .models import Admission, AdmissionRule
+from .serializers import AdmissionSerializer, AdmissionRuleSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 
@@ -22,3 +22,9 @@ class AdmissionListCreateView(generics.ListCreateAPIView):
 class AdmissionDetailsView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Admission.objects.all()
     serializer_class = AdmissionSerializer
+
+
+class AdmissionRuleListView(generics.ListCreateAPIView):
+    queryset = AdmissionRule.objects.filter(is_active=True).order_by('order', 'created_at')
+    serializer_class = AdmissionRuleSerializer
+    pagination_class = None
