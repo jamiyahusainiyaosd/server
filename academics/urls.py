@@ -1,7 +1,38 @@
 from django.urls import path
-from .views import AcademicListApiView, AcademicDetailsListApiView
+from .views import (
+    AcademicListApiView,
+    AcademicDetailsListApiView,
+    BoardingRuleListApiView,
+    HolidayListApiView,
+    ExamSessionListApiView,
+    ExamInstructionListApiView,
+    ExamRoutineListApiView,
+    ExamRoutineJamatsApiView,
+    ClassDepartmentListApiView,
+    DailyScheduleListApiView,
+    ClassRoutineListApiView,
+    ClassRoutineMetaApiView,
+    CoCurricularListApiView,
+    BoardingMealMenuListApiView,
+    BoardingMealTimingListApiView,
+    BoardingMealRuleListApiView,
+)
 
 urlpatterns = [
     path('', AcademicListApiView.as_view(), name='academic-list'),
+    path('boarding-rules/', BoardingRuleListApiView.as_view(), name='boarding-rules-list'),
+    path('holidays/', HolidayListApiView.as_view(), name='holidays-list'),
+    path('exam-sessions/', ExamSessionListApiView.as_view(), name='exam-sessions-list'),
+    path('exam-instructions/', ExamInstructionListApiView.as_view(), name='exam-instructions-list'),
+    path('exam-routines/', ExamRoutineListApiView.as_view(), name='exam-routines-list'),
+    path('exam-routines/jamats/', ExamRoutineJamatsApiView.as_view(), name='exam-routines-jamats'),
+    path('class-departments/', ClassDepartmentListApiView.as_view(), name='class-departments-list'),
+    path('daily-schedules/', DailyScheduleListApiView.as_view(), name='daily-schedules-list'),
+    path('class-routines/', ClassRoutineListApiView.as_view(), name='class-routines-list'),
+    path('class-routines/meta/', ClassRoutineMetaApiView.as_view(), name='class-routines-meta'),
+    path('co-curricular/', CoCurricularListApiView.as_view(), name='co-curricular-list'),
+    path('meal-menus/', BoardingMealMenuListApiView.as_view(), name='meal-menus-list'),
+    path('meal-timings/', BoardingMealTimingListApiView.as_view(), name='meal-timings-list'),
+    path('meal-rules/', BoardingMealRuleListApiView.as_view(), name='meal-rules-list'),
     path('<uuid:pk>/', AcademicDetailsListApiView.as_view(), name='academic-detail'),
 ]
