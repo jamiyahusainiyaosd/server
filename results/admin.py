@@ -5,7 +5,7 @@ from django.utils.html import format_html
 from unfold.admin import ModelAdmin
 from server.admin_utils import SupabaseUploadAdminMixin, get_image_url, validate_image_size
 from server.supabase_storage import upload_file_to_supabase
-from .models import StudentResults, StudentResultImage
+from .models import StudentResults, StudentResultImage, TopAchiever
 
 CLASS_FOLDER_MAP = {
     'নাজেরা': 'najera',
@@ -28,10 +28,6 @@ CLASS_FOLDER_MAP = {
 
 
 def get_class_result_folder(class_name):
-    """
-    Returns a clean, URL-safe dynamic folder name based on the class name.
-    Maps known Bengali class titles to neat slug folders, with fallback to clean slug.
-    """
     if not class_name:
         return "general"
     for key, folder in CLASS_FOLDER_MAP.items():
@@ -212,3 +208,130 @@ class StudentResultImageAdmin(SupabaseUploadAdminMixin, ModelAdmin):
         )
 
     image_preview.short_description = "Preview"
+
+
+class TopAchieverAdminForm(forms.ModelForm):
+    upload_image = forms.FileField(
+        required=False,
+        validators=[validate_image_size],
+        label="কৃতি শিক্ষার্থীর ছবি আপলোড করুন (Supabase Storage)",
+        help_text="কম্পিউটার বা ফোন থেকে ছবি নির্বাচন করুন (সর্বোচ্চ ২ MB)। এটি স্বয়ংক্রিয়ভাবে Supabase-এর 'Published results' বাকেটের 'top_achievers' ফোল্ডারে সংরক্ষিত হবে।"
+    )
+
+    class Meta:
+        model = TopAchiever
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if "image" in self.fields:
+            self.fields["image"].required = False
+            self.fields["image"].label = "ছবির সরাসরি CDN URL (ঐচ্ছিক)"
+            self.fields["image"].help_text = "উপরে ছবি আপলোড দিলে এই ফিল্ডটি স্বয়ংক্রিয়ভাবে পূরণ হয়ে যাবে।"
+
+
+@admin.register(TopAchiever)
+class TopAchieverAdmin(SupabaseUploadAdminMixin, ModelAdmin):
+    form = TopAchieverAdminForm
+    supabase_upload_field = "upload_image"
+    supabase_target_field = "image"
+    supabase_folder = "top_achievers"
+    supabase_bucket = "Published results"
+
+    list_display = (
+        "image_preview",
+        "name",
+        "achievement_title",
+        "class_name",
+        "category_badge",
+        "board_name",
+        "academic_year",
+        "is_featured",
+        "order",
+    )
+
+    list_filter = (
+        "category",
+        "is_featured",
+        "academic_year",
+        "board_name",
+    )
+
+    search_fields = (
+        "name",
+        "achievement_title",
+        "class_name",
+        "board_name",
+        "roll_number",
+        "address",
+        "father_name",
+    )
+
+    list_editable = ("is_featured", "order")
+    ordering = ("order", "-created_at")
+    list_per_page = 20
+
+    readonly_fields = ("current_image_preview", "created_at", "updated_at")
+
+    fieldsets = (
+        ("শিক্ষার্থী ও অর্জনের তথ্য", {
+            "fields": (
+                "name",
+                "upload_image",
+                "current_image_preview",
+                "image",
+                "achievement_title",
+                "category",
+                "class_name",
+            )
+        }),
+        ("বোর্ড, পরীক্ষা ও মেধার বিবরণ", {
+            "fields": (
+                "board_name",
+                "academic_year",
+                "roll_number",
+                "score_or_division",
+            )
+        }),
+        ("ব্যক্তিগত ও বার্তা তথ্য", {
+            "fields": (
+                "father_name",
+                "address",
+                "quote",
+            )
+        }),
+        ("প্রদর্শন ও সাজানোর সেটিংস", {
+            "fields": (
+                "is_featured",
+                "order",
+                "created_at",
+                "updated_at",
+            )
+        }),
+    )
+
+    def image_preview(self, obj):
+        image_url = get_image_url(obj.image)
+        if not image_url:
+            return format_html('<span style="color:#94a3b8; font-size:12px;">ছবি নেই</span>')
+        return format_html(
+            '<img src="{}" width="48" height="48" style="border-radius:10px; object-fit:cover; border:1px solid #cbd5e1; box-shadow:0 1px 3px rgba(0,0,0,0.08);" />',
+            image_url
+        )
+
+    image_preview.short_description = "ছবি"
+
+    def category_badge(self, obj):
+        colors = {
+            'national': '#059669',    # Emerald
+            'division': '#2563eb',    # Blue
+            'district': '#7c3aed',    # Purple
+            'madrasa': '#d97706',     # Amber
+        }
+        color = colors.get(obj.category, '#475569')
+        return format_html(
+            '<span style="background-color:{}15; color:{}; border:1px solid {}40; padding:3px 8px; border-radius:9999px; font-weight:600; font-size:11px;">{}</span>',
+            color, color, color, obj.get_category_display()
+        )
+
+    category_badge.short_description = "অর্জন স্তর"

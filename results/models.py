@@ -34,3 +34,60 @@ class StudentResultImage(models.Model):
     
     class Meta:
         verbose_name_plural = 'ছাত্রদের ফলাফল ছবি'
+
+
+class TopAchiever(models.Model):
+    CATEGORY_CHOICES = [
+        ('national', 'জাতীয় / দেশ সেরা'),
+        ('division', 'বিভাগীয় সেরা'),
+        ('district', 'জেলা ভিত্তিক সেরা'),
+        ('madrasa', 'মাদ্রাসার অভ্যন্তরীণ সেরা'),
+    ]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=150, verbose_name='কৃতি শিক্ষার্থীর নাম')
+    image = models.URLField(max_length=1000, blank=True, default='', verbose_name='ছবি (Supabase CDN URL)')
+    class_name = models.CharField(max_length=150, verbose_name='জামাত / বিভাগ')
+    achievement_title = models.CharField(max_length=200, verbose_name='মেধা স্থান / অর্জনের বিবরণ')
+    board_name = models.CharField(
+        max_length=200, 
+        default='বেফাকুল মাদারিসিল আরাবিয়া বাংলাদেশ', 
+        blank=True, 
+        verbose_name='বোর্ড / পরীক্ষার নাম'
+    )
+    category = models.CharField(
+        max_length=50, 
+        choices=CATEGORY_CHOICES, 
+        default='national', 
+        verbose_name='অর্জন স্তর / ক্যাটাগরি'
+    )
+    roll_number = models.CharField(max_length=50, blank=True, default='', verbose_name='রোল / নিবন্ধন নং')
+    academic_year = models.CharField(max_length=100, default='২০২৫-২০২৬ ইং', blank=True, verbose_name='শিক্ষাবর্ষ / সন')
+    score_or_division = models.CharField(
+        max_length=100, 
+        default='মুমতাজ (স্টার মার্কসহ)', 
+        blank=True, 
+        verbose_name='প্রাপ্ত গ্রেড / বিভাগ'
+    )
+    father_name = models.CharField(max_length=150, blank=True, default='', verbose_name='পিতার নাম')
+    address = models.CharField(max_length=200, blank=True, default='', verbose_name='ঠিকানা / জেলা')
+    quote = models.TextField(blank=True, default='', verbose_name='উস্তাদদের দোয়া ও অনুভূতি / মন্তব্য')
+    is_featured = models.BooleanField(default=True, verbose_name='হোম পেজে "এ বছরের সেরা" হিসেবে প্রদর্শন করুন')
+    order = models.PositiveIntegerField(default=1, verbose_name='প্রদর্শনের ক্রম (Order)')
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'এ বছরের সেরা কৃতি শিক্ষার্থী'
+        verbose_name_plural = 'এ বছরের সেরা কৃতি শিক্ষার্থীবৃন্দ'
+        ordering = ['order', '-created_at']
+        indexes = [
+            models.Index(fields=['name']),
+            models.Index(fields=['category']),
+            models.Index(fields=['is_featured']),
+            models.Index(fields=['academic_year']),
+        ]
+
+    def __str__(self):
+        return f'{self.name} — {self.achievement_title} ({self.class_name})'

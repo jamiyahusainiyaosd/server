@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import StudentResults, StudentResultImage
+from .models import StudentResults, StudentResultImage, TopAchiever
 
 class StudentResultImageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,3 +33,29 @@ class StudentResueltsDetailSerializer(serializers.ModelSerializer):
         if obj.images.exists():
             return obj.images.latest('resultSheetUpdatedAt').resultSheetUpdatedAt
         return None
+
+class TopAchieverSerializer(serializers.ModelSerializer):
+    category_display = serializers.CharField(source='get_category_display', read_only=True)
+
+    class Meta:
+        model = TopAchiever
+        fields = [
+            'id',
+            'name',
+            'image',
+            'class_name',
+            'achievement_title',
+            'board_name',
+            'category',
+            'category_display',
+            'roll_number',
+            'academic_year',
+            'score_or_division',
+            'father_name',
+            'address',
+            'quote',
+            'is_featured',
+            'order',
+            'created_at',
+            'updated_at',
+        ]
